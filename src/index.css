@@ -1,0 +1,335 @@
+:root {
+    --font-normal: monospace;
+
+    --primary-forground: #dfdfdf;
+    --secondary-forground: #b1b1b1;
+    --tertiary-forground: #9f9f9f;
+    --primary-background: #1e1e1e;
+    --secondary-background: #2c2c2c;
+    --tertiary-background: #3c3c3c;
+
+    --active: #008080;
+    --error: #f08080;
+    --success: #b2e7cd;
+
+    --primary-hover: #007373;
+    --secondary-hover: #3fbfbf;
+
+    --highlight: #00ffff77;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+::selection {
+    background-color: var(--highlight);
+    color: var(--primary-forground);
+}
+:focus-visible {
+    outline-color: var(--secondary-hover);
+    outline-style: solid;
+    outline-width: 0.1rem;
+}
+html {
+    font-size: 16px;
+}
+body {
+    font-family: var(--font-normal);
+    color: var(--primary-forground);
+    background-color: var(--primary-background);
+    color: #00ffff;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+*,
+:before,
+:after {
+    box-sizing: border-box;
+}
+.container {
+    width: 100%;
+}
+.row {
+    display: flex;
+    flex-wrap: wrap;
+}
+.col {
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: auto;
+}
+.col-1,
+.col-2,
+.col-3,
+.col-4,
+.col-5,
+.col-6,
+.col-7,
+.col-8,
+.col-9,
+.col-10,
+.col-11,
+.col-12 {
+    flex-grow: 0;
+    flex-shrink: 0;
+    width: 100%;
+}
+.col-1 {
+    flex-basis: 8.333%;
+    max-width: 8.333%;
+}
+.col-2 {
+    flex-basis: 16.667%;
+    max-width: 16.667%;
+}
+.col-3 {
+    flex-basis: 25%;
+    max-width: 25%;
+}
+.col-4 {
+    flex-basis: 33.333%;
+    max-width: 33.333%;
+}
+.col-5 {
+    flex-basis: 41.667%;
+    max-width: 41.667%;
+}
+.col-6 {
+    flex-basis: 50%;
+    max-width: 50%;
+}
+.col-7 {
+    flex-basis: 58.333%;
+    max-width: 58.333%;
+}
+.col-8 {
+    flex-basis: 66.667%;
+    max-width: 66.667%;
+}
+.col-9 {
+    flex-basis: 75%;
+    max-width: 75%;
+}
+.col-10 {
+    flex-basis: 83.333%;
+    max-width: 83.333%;
+}
+.col-11 {
+    flex-basis: 91.667%;
+    max-width: 91.667%;
+}
+.col-12 {
+    flex-basis: 100%;
+    max-width: 100%;
+}
+.col-offset-1 {
+    margin-left: 8.333%;
+}
+.col-offset-2 {
+    margin-left: 16.667%;
+}
+.col-offset-3 {
+    margin-left: 25%;
+}
+.col-offset-4 {
+    margin-left: 33.333%;
+}
+.col-offset-5 {
+    margin-left: 41.667%;
+}
+.col-offset-6 {
+    margin-left: 50%;
+}
+.col-offset-7 {
+    margin-left: 58.333%;
+}
+.col-offset-8 {
+    margin-left: 66.667%;
+}
+.col-offset-9 {
+    margin-left: 75%;
+}
+.col-offset-10 {
+    margin-left: 83.333%;
+}
+.col-offset-11 {
+    margin-left: 91.667%;
+}
+.col-offset-12 {
+    margin-left: 100%;
+}
+.icon,
+.center,
+.center-x,
+.center-y-row {
+    align-items: center;
+    align-content: center;
+}
+.icon,
+.center,
+.center-y,
+.center-x-row {
+    justify-items: center;
+    justify-content: center;
+}
+.form-group {
+    color: var(--primary-forground);
+    margin-bottom: 0.9rem;
+    overflow: hidden;
+}
+.form-group > label {
+    font-size: 0.75rem;
+}
+.form-group input:disabled,
+.form-group input {
+    appearance: none;
+    background-color: transparent;
+    border-color: transparent;
+    border-style: solid;
+    font-family: var(--font-normal);
+    font-size: 1rem;
+    outline-color: initial;
+    outline-style: initial;
+    outline-width: 0;
+    padding: 0.25rem;
+    width: 100%;
+}
+.form-group-container {
+    background-color: var(--secondary-background);
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+    border-bottom-left-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+}
+.icon,
+.icon > svg,
+.icon:before {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    border: 0;
+    display: flex;
+    padding: 0;
+    height: 1rem;
+    width: 1rem;
+}
+.icon > svg {
+    fill: none;
+    stroke: var(--tertiary-forground);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1;
+    pointer-events: none;
+}
+.icon-btn {
+    border-color: transparent;
+    border-top-left-radius: 0.25rem;
+    border-top-right-radius: 0.25rem;
+    border-bottom-left-radius: 0.25rem;
+    border-bottom-right-radius: 0.25rem;
+    border-style: solid;
+    border-width: 0.125rem;
+    cursor: pointer;
+    transition-property: color, stroke;
+    transition-duration: 0.1s;
+    transition-timing-function: ease-in;
+    transition-delay: 0s;
+}
+.icon-btn:hover {
+    background-color: var(--tertiary-background);
+}
+.icon-btn.success,
+.icon-btn.success > svg {
+    color: var(--success) !important;
+    stroke: var(--success) !important;
+}
+.icon-btn.error,
+.icon-btn.error > svg {
+    border-color: var(--error);
+    stroke: var(--error) !important;
+}
+.options-container {
+    width: 100%;
+    justify-content: space-evenly;
+}
+.end {
+    justify-content: end;
+    justify-items: end;
+}
+.start {
+    justify-content: start;
+    justify-items: start;
+}
+.text-primary {
+    color: var(--primary-forground) !important;
+}
+.text-secondary {
+    color: var(--secondary-forground) !important;
+}
+.text-tertiary {
+    color: var(--tertiary-forground) !important;
+}
+.p-0 {
+    padding: 0 !important;
+}
+.p-1 {
+    padding: 0.25rem !important;
+}
+.p-2 {
+    padding: 0.5rem !important;
+}
+.p-3 {
+    padding: 1rem !important;
+}
+.p-4 {
+    padding: 1.5rem !important;
+}
+.p-5 {
+    padding: 3rem !important;
+}
+.px-0 {
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+}
+.px-1 {
+    padding-right: 0.25rem !important;
+    padding-left: 0.25rem !important;
+}
+.px-2 {
+    padding-right: 0.5rem !important;
+    padding-left: 0.5rem !important;
+}
+.px-3 {
+    padding-right: 1rem !important;
+    padding-left: 1rem !important;
+}
+.px-4 {
+    padding-right: 1.5rem !important;
+    padding-left: 1.5rem !important;
+}
+.px-5 {
+    padding-right: 3rem !important;
+    padding-left: 3rem !important;
+}
+.py-0 {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+.fs-lg {
+    font-size: 2rem !important;
+}
+.text-start {
+    text-align: left !important;
+}
+.text-end {
+    text-align: right !important;
+}
+.text-center {
+    text-align: center !important;
+}
+.wrapper {
+    position: absolute;
+}
