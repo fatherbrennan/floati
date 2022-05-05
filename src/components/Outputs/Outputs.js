@@ -9,6 +9,24 @@ import React from 'react';
 class Outputs extends React.Component {
     constructor(props) {
         super(props);
+
+        this.viewBoxX = 80;
+        this.viewBoxY = 16;
+        this.viewBoxHalfY = this.viewBoxY / 2;
+
+        this.charX = 0.602051;
+        this.charY = 1;
+        this.charM = this.charY / this.charX;
+
+        this.fontSizeDefault = 12;
+        this.fontSizeMinWidth = this.viewBoxX / (this.charX * this.fontSizeDefault);
+
+        this.calculateFontSize = this.calculateFontSize.bind(this);
+    }
+
+    calculateFontSize(l) {
+        if (l < this.fontSizeMinWidth) return this.fontSizeDefault;
+        return (this.viewBoxX / l) * this.charM;
     }
 
     render() {
@@ -49,7 +67,24 @@ class Outputs extends React.Component {
                                         </a>
                                     </div>
                                     <div className="col-10">
-                                        <input type="text" className="fs-lg text-secondary text-end" readOnly disabled value={output.value} />
+                                        <svg
+                                            viewBox={`0 0 ${this.viewBoxX} ${this.viewBoxY}`}
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            width="100%"
+                                            height="100%"
+                                            className="fill-secondary"
+                                        >
+                                            <text
+                                                x={this.viewBoxX}
+                                                y={this.viewBoxHalfY}
+                                                alignmentBaseline="central"
+                                                dominantBaseline="central"
+                                                textAnchor="end"
+                                                fontSize={this.calculateFontSize(output.value.toString().length)}
+                                            >
+                                                {output.value}
+                                            </text>
+                                        </svg>
                                     </div>
                                 </div>
                             </div>
