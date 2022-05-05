@@ -5,7 +5,6 @@
  * @fatherbrennan
  */
 import React from 'react';
-import './Dropdown.css';
 
 class Dropdown extends React.Component {
     constructor(props) {
