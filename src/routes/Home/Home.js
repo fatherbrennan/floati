@@ -13,7 +13,7 @@ class Home extends React.Component {
         super(props);
 
         this.state = {
-            activeInvestment: 0,
+            activeInvestment: '',
             // Default index
             activeFeeRate: 0,
             activeIncomeTaxRate: 0,
@@ -64,8 +64,9 @@ class Home extends React.Component {
             useOptionsLabels: false,
         };
 
+        this.inputFilter = this.inputFilter.bind(this);
+        this.inputKeyboardShortcuts = this.inputKeyboardShortcuts.bind(this);
         this.updateCalculations = this.updateCalculations.bind(this);
-        this.updateActiveInvestment = this.updateActiveInvestment.bind(this);
         this.updateActiveFeeRate = this.updateActiveFeeRate.bind(this);
         this.updateActiveIncomeTaxRate = this.updateActiveIncomeTaxRate.bind(this);
         this.updateActiveMarginMultiplier = this.updateActiveMarginMultiplier.bind(this);
@@ -111,8 +112,30 @@ class Home extends React.Component {
         this.setState({ outputs: [...newOutputs] });
     }
 
-    updateActiveInvestment(e) {
-        this.setState({ activeInvestment: e.target.value }, this.updateCalculations);
+    inputKeyboardShortcuts(e) {
+        if (/Delete|Escape/.test(e.code.slice()) === true) this.setState({ activeInvestment: '' }, this.updateCalculations);
+    }
+
+    inputFilter(e) {
+        const a = e.target.value.slice();
+        const re = /[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?/;
+        let b = '';
+        switch (true) {
+            case /^0$/m.test(a):
+                b = a;
+                break;
+            case /^[0\.|\.]$/m.test(a):
+                b = '0.';
+                break;
+            case /\.$/m.test(a):
+                const c = `${a.replace(/\.*$/, '.')}0`.match(re);
+                b = c === null ? b : c[0].replace(/\.0$/, '.');
+                break;
+            default:
+                const d = a.match(re);
+                b = d === null ? b : d[0];
+        }
+        this.setState({ activeInvestment: b }, this.updateCalculations);
     }
 
     updateActiveFeeRate(e) {
@@ -170,8 +193,9 @@ class Home extends React.Component {
                                             type="text"
                                             className="text-primary"
                                             placeholder="0"
-                                            value={this.state.activeInvestment == '0' ? '' : this.state.activeInvestment}
-                                            onInput={this.updateActiveInvestment}
+                                            value={this.state.activeInvestment}
+                                            onKeyDown={this.inputKeyboardShortcuts}
+                                            onInput={this.inputFilter}
                                         />
                                     </div>
                                     <div className="col-2 center-y-row end p-1 row">
