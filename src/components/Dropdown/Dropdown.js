@@ -18,6 +18,13 @@ class Dropdown extends React.Component {
                     {this.props.label || '⚙'}
                 </button>
                 <ul tabIndex="-1" className={`dd-body${this.props.right ? ' right' : ''}`}>
+                    {this.props.firstItem ? (
+                        <li className="dd-item-static">
+                            <h4 className="dd-item-heading">{this.props.firstItem.heading || null}</h4>
+                            <div className="dd-item-text">{this.props.firstItem.text || null}</div>
+                        </li>
+                    ) : null}
+                    {this.props.firstItem ? <hr className="dd-item-separator" /> : null}
                     {this.props.items.map((item, index) => {
                         if (item) {
                             return (

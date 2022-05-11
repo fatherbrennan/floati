@@ -16,7 +16,7 @@ class Home extends React.Component {
             activeInvestment: '',
             // Default index
             activeFeeRate: 0,
-            activeIncomeTaxRate: 0,
+            activeTaxRate: 0,
             activeMarginMultiplier: 0,
             outputs: [
                 { id: 'profitMargin', label: 'Profit Margin', value: '0', active: true },
@@ -30,30 +30,12 @@ class Home extends React.Component {
                 { id: 'taxPaid', label: 'Tax Paid', value: '0', active: true },
                 { id: 'capital', label: 'Capital', value: '0', active: true },
             ],
-            /**
-             * Investment
-             * -> >0
-             *
-             * Income Tax Rate
-             * -> 1 - x / 100 is x% income tax rate
-             * -> >0
-             * -> <100
-             *
-             * Fee Rate
-             * -> 1 - x / 100 is x% buy/sell fee
-             * -> >0
-             * -> <100
-             *
-             * Margin Multiplier
-             * -> 1 + x / 100 is x% return on investment
-             * -> >0
-             */
             feeRates: [
                 { label: 'none', value: 1 },
                 { label: '0.1', value: 0.999 },
                 { label: '1', value: 0.99 },
             ],
-            incomeTaxRates: [
+            taxRates: [
                 { label: 'none', value: 1 },
                 { label: '45', value: 0.55 },
             ],
@@ -64,18 +46,19 @@ class Home extends React.Component {
             useOptionsLabels: false,
         };
 
+        // Register methods
         this.inputFilter = this.inputFilter.bind(this);
         this.inputKeyboardShortcuts = this.inputKeyboardShortcuts.bind(this);
         this.updateCalculations = this.updateCalculations.bind(this);
         this.updateActiveFeeRate = this.updateActiveFeeRate.bind(this);
-        this.updateActiveIncomeTaxRate = this.updateActiveIncomeTaxRate.bind(this);
+        this.updateactiveTaxRate = this.updateactiveTaxRate.bind(this);
         this.updateActiveMarginMultiplier = this.updateActiveMarginMultiplier.bind(this);
         this.toggleOutputVisibility = this.toggleOutputVisibility.bind(this);
     }
 
     updateCalculations() {
         class Calculator {
-            constructor(investment, feeRate, marginMultiplier, incomeTaxRate) {
+            constructor(investment, feeRate, marginMultiplier, taxRate) {
                 const useDefault = investment === 0 || isNaN(investment) ? '0' : false;
                 this.investment = useDefault || investment;
                 // Asked profit margin on investment (based on margin multiplier)
@@ -85,13 +68,13 @@ class Home extends React.Component {
                 // Amount paid in buying fees (transaction)
                 this.buyFee = useDefault || investment - this.actualBuyValue;
                 // Sell value excluding sell fees
-                this.actualSellValue = useDefault || (this.profitMargin + this.buyFee) / incomeTaxRate + investment;
+                this.actualSellValue = useDefault || (this.profitMargin + this.buyFee) / taxRate + investment;
                 // Sell value (value to sell at - calculation result)
                 this.sellAbove = useDefault || this.actualSellValue / feeRate;
                 // Amount paid in selling fees (transaction)
                 this.sellFee = useDefault || this.sellAbove - this.actualSellValue;
                 this.profitBeforeTax = useDefault || this.actualSellValue - investment;
-                this.profitAfterTax = useDefault || this.profitBeforeTax * incomeTaxRate;
+                this.profitAfterTax = useDefault || this.profitBeforeTax * taxRate;
                 this.taxPaid = useDefault || this.profitBeforeTax - this.profitAfterTax;
                 this.capital = useDefault || this.actualBuyValue + this.profitAfterTax;
             }
@@ -101,7 +84,7 @@ class Home extends React.Component {
             parseFloat(this.state.activeInvestment),
             this.state.feeRates[this.state.activeFeeRate].value,
             this.state.marginMultipliers[this.state.activeMarginMultiplier].value,
-            this.state.incomeTaxRates[this.state.activeIncomeTaxRate].value
+            this.state.taxRates[this.state.activeTaxRate].value
         );
 
         const newOutputs = this.state.outputs.map(o => {
@@ -142,8 +125,8 @@ class Home extends React.Component {
         this.setState({ activeFeeRate: +e.target.dataset.index }, this.updateCalculations);
     }
 
-    updateActiveIncomeTaxRate(e) {
-        this.setState({ activeIncomeTaxRate: +e.target.dataset.index }, this.updateCalculations);
+    updateactiveTaxRate(e) {
+        this.setState({ activeTaxRate: +e.target.dataset.index }, this.updateCalculations);
     }
 
     updateActiveMarginMultiplier(e) {
@@ -165,18 +148,30 @@ class Home extends React.Component {
                         <div className="row options-container">
                             <Dropdown
                                 label={this.state.useOptionsLabels ? this.state.feeRates[this.state.activeFeeRate].label : null}
+                                firstItem={{
+                                    heading: 'Fee Rate',
+                                    text: 'Percentage value between 0 and 100 representing the buy and sell fees.',
+                                }}
                                 items={this.state.feeRates}
                                 clickEvent={this.updateActiveFeeRate}
                                 dataIndex={true}
                             />
                             <Dropdown
-                                label={this.state.useOptionsLabels ? this.state.incomeTaxRates[this.state.activeIncomeTaxRate].label : null}
-                                items={this.state.incomeTaxRates}
-                                clickEvent={this.updateActiveIncomeTaxRate}
+                                label={this.state.useOptionsLabels ? this.state.taxRates[this.state.activeTaxRate].label : null}
+                                firstItem={{
+                                    heading: 'Tax Rate',
+                                    text: 'Percentage value between 0 and 100 representing the additional tax rate (e.g. Income Tax Rate).',
+                                }}
+                                items={this.state.taxRates}
+                                clickEvent={this.updateactiveTaxRate}
                                 dataIndex={true}
                             />
                             <Dropdown
                                 label={this.state.useOptionsLabels ? this.state.marginMultipliers[this.state.activeMarginMultiplier].label : null}
+                                firstItem={{
+                                    heading: 'Margin Multiplier',
+                                    text: 'Percentage value greater than 0, representing the desired return on investment.',
+                                }}
                                 items={this.state.marginMultipliers}
                                 clickEvent={this.updateActiveMarginMultiplier}
                                 dataIndex={true}
@@ -190,7 +185,10 @@ class Home extends React.Component {
                                 <div className="row form-group-container">
                                     <div className="col-10">
                                         <input
+                                            ref={this.inputElement}
+                                            autoFocus={true}
                                             type="text"
+                                            tabIndex="1"
                                             className="text-primary"
                                             placeholder="0"
                                             value={this.state.activeInvestment}
@@ -200,7 +198,16 @@ class Home extends React.Component {
                                     </div>
                                     <div className="col-2 center-y-row end p-1 row">
                                         <div className="wrapper">
-                                            <Dropdown items={this.state.outputs} clickEvent={this.toggleOutputVisibility} dataIndex={true} right={true} />
+                                            <Dropdown
+                                                firstItem={{
+                                                    heading: 'Calculations',
+                                                    text: 'Toggle the results visibility.',
+                                                }}
+                                                items={this.state.outputs}
+                                                clickEvent={this.toggleOutputVisibility}
+                                                dataIndex={true}
+                                                right={true}
+                                            />
                                         </div>
                                     </div>
                                 </div>
