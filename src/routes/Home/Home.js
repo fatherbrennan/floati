@@ -12,12 +12,21 @@ class Home extends React.Component {
     constructor(props) {
         super(props);
 
+        // Register passed methods
+        this.setKeyBindings = this.props.setKeyBindings.bind(this);
+        this.useKeyBindings = this.props.useKeyBindings.bind(this);
+
         this.state = {
             activeInvestment: '',
             // Default index
             activeFeeRate: 0,
             activeTaxRate: 0,
             activeMarginMultiplier: 0,
+            keyBindings: {
+                Slash: () => {
+                    this.inputElement.current.focus();
+                },
+            },
             outputs: [
                 { id: 'profitMargin', label: 'Profit Margin', value: '0', active: true },
                 { id: 'actualBuyValue', label: 'Actual Buy Value', value: '0', active: true },
@@ -46,14 +55,26 @@ class Home extends React.Component {
             useOptionsLabels: false,
         };
 
+        // Register refs
+        this.inputElement = React.createRef();
+
         // Register methods
         this.inputFilter = this.inputFilter.bind(this);
-        this.inputKeyboardShortcuts = this.inputKeyboardShortcuts.bind(this);
         this.updateCalculations = this.updateCalculations.bind(this);
+        this.updateActiveInvestment = this.updateActiveInvestment.bind(this);
         this.updateActiveFeeRate = this.updateActiveFeeRate.bind(this);
         this.updateActiveTaxRate = this.updateActiveTaxRate.bind(this);
         this.updateActiveMarginMultiplier = this.updateActiveMarginMultiplier.bind(this);
         this.toggleOutputVisibility = this.toggleOutputVisibility.bind(this);
+    }
+
+    componentDidMount() {
+        this.setKeyBindings();
+        document.addEventListener('keydown', this.useKeyBindings);
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener('keydown', this.useKeyBindings);
     }
 
     updateCalculations() {
@@ -95,10 +116,6 @@ class Home extends React.Component {
         this.setState({ outputs: [...newOutputs] });
     }
 
-    inputKeyboardShortcuts(e) {
-        if (/Delete|Escape/.test(e.code.slice()) === true) this.setState({ activeInvestment: '' }, this.updateCalculations);
-    }
-
     inputFilter(e) {
         const a = e.target.value.slice();
         const re = /[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?/;
@@ -119,6 +136,10 @@ class Home extends React.Component {
                 b = d === null ? b : d[0];
         }
         this.setState({ activeInvestment: b }, this.updateCalculations);
+    }
+
+    updateActiveInvestment() {
+        this.setState({ activeInvestment: '' }, this.updateCalculations);
     }
 
     updateActiveFeeRate(e) {
@@ -192,7 +213,12 @@ class Home extends React.Component {
                                             className="text-primary"
                                             placeholder="0"
                                             value={this.state.activeInvestment}
-                                            onKeyDown={this.inputKeyboardShortcuts}
+                                            onFocus={this.setKeyBindings({
+                                                Delete: this.updateActiveInvestment,
+                                                Escape: this.updateActiveInvestment,
+                                            })}
+                                            onBlur={this.setKeyBindings}
+                                            onKeyDown={this.useKeyBindings}
                                             onInput={this.inputFilter}
                                         />
                                     </div>
