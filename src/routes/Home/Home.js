@@ -51,7 +51,7 @@ class Home extends React.Component {
         this.inputKeyboardShortcuts = this.inputKeyboardShortcuts.bind(this);
         this.updateCalculations = this.updateCalculations.bind(this);
         this.updateActiveFeeRate = this.updateActiveFeeRate.bind(this);
-        this.updateactiveTaxRate = this.updateactiveTaxRate.bind(this);
+        this.updateActiveTaxRate = this.updateActiveTaxRate.bind(this);
         this.updateActiveMarginMultiplier = this.updateActiveMarginMultiplier.bind(this);
         this.toggleOutputVisibility = this.toggleOutputVisibility.bind(this);
     }
@@ -125,7 +125,7 @@ class Home extends React.Component {
         this.setState({ activeFeeRate: +e.target.dataset.index }, this.updateCalculations);
     }
 
-    updateactiveTaxRate(e) {
+    updateActiveTaxRate(e) {
         this.setState({ activeTaxRate: +e.target.dataset.index }, this.updateCalculations);
     }
 
@@ -163,7 +163,7 @@ class Home extends React.Component {
                                     text: 'Percentage value between 0 and 100 representing the additional tax rate (e.g. Income Tax Rate).',
                                 }}
                                 items={this.state.taxRates}
-                                clickEvent={this.updateactiveTaxRate}
+                                clickEvent={this.updateActiveTaxRate}
                                 dataIndex={true}
                             />
                             <Dropdown
