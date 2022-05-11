@@ -315,6 +315,10 @@ input::-webkit-inner-spin-button {
     box-shadow: 0 5px 5px -3px #00000014, 0 8px 10px 1px #0000000f, 0 3px 14px 2px #0000000a;
     margin-top: 0.125rem;
 }
+.dd > .dd-body .dd-item-separator {
+    border-color: var(--secondary-forground);
+    border-style: groove;
+}
 .dd > .dd-body,
 .dd > .dd-body > .dd-item .btn {
     padding-bottom: 0.25rem;
@@ -323,7 +327,7 @@ input::-webkit-inner-spin-button {
 .dd > .dd-body > .dd-item .btn {
     color: var(--primary-forground);
     font-family: var(--font-normal);
-    font-size: 0.75rem;
+    font-size: 0.825rem;
     padding-left: 1rem;
     padding-right: 1rem;
     text-align: left;
@@ -347,11 +351,30 @@ input::-webkit-inner-spin-button {
     text-indent: 1rem;
     padding-left: 0;
 }
+.dd > .dd-body > .dd-item-static .dd-item-heading,
+.dd > .dd-body > .dd-item-static .dd-item-text {
+    padding-bottom: 0.25rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    padding-top: 0.25rem;
+}
+.dd > .dd-body > .dd-item-static .dd-item-heading {
+    color: var(--primary-forground);
+    font-size: 0.825rem;
+    font-weight: 900;
+    margin-bottom: 0;
+    margin-top: 0;
+}
+.dd > .dd-body > .dd-item-static .dd-item-text {
+    font-size: 0.75rem;
+}
 /* Motion */
 .dd > .dd-body.right {
     transform-origin: top right;
 }
 .dd > .dd-body {
+    max-width: 80vw;
+    min-width: 8rem;
     opacity: 0;
     transform: scale(0.25);
     transform-origin: top left;
