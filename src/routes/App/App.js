@@ -6,31 +6,17 @@
  */
 import React from 'react';
 import Home from './../Home/Home';
+import KeyBinder from './../../common/KeyBinder';
 
 class App extends React.Component {
     constructor(props) {
         super(props);
-    }
 
-    setKeyBindings(...bindings) {
-        this.keyBindings = {
-            ...this.props.keyBindings,
-            ...this.state.keyBindings,
-            ...(bindings.length > 0
-                ? bindings.reduce((a, b) => {
-                      return { ...a, ...b };
-                  })
-                : bindings),
-        };
-    }
-
-    useKeyBindings(e) {
-        const combo = `${e.altKey ? 'altKey' : ''}${e.ctrlKey ? 'ctrlKey' : ''}${e.metaKey ? 'metaKey' : ''}${e.shiftKey ? 'shiftKey' : ''}${e.code.slice()}`;
-        if (this.keyBindings[combo] !== undefined) this.keyBindings[combo]();
+        this.keyBindings = new KeyBinder();
     }
 
     render() {
-        return <Home setKeyBindings={this.setKeyBindings} useKeyBindings={this.useKeyBindings} />;
+        return <Home KeyBinder={this.keyBindings} />;
     }
 }
 

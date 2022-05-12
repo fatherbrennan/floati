@@ -12,9 +12,15 @@ class Home extends React.Component {
     constructor(props) {
         super(props);
 
-        // Register passed methods
-        this.setKeyBindings = this.props.setKeyBindings.bind(this);
-        this.useKeyBindings = this.props.useKeyBindings.bind(this);
+        // Reference instance
+        this.keyBindings = this.props.KeyBinder;
+
+        // Set bindings
+        this.keyBindings.setBindings({
+            Slash: () => {
+                this.inputElement.current.focus();
+            },
+        });
 
         this.state = {
             activeInvestment: '',
@@ -22,11 +28,6 @@ class Home extends React.Component {
             activeFeeRate: 0,
             activeTaxRate: 0,
             activeMarginMultiplier: 0,
-            keyBindings: {
-                Slash: () => {
-                    this.inputElement.current.focus();
-                },
-            },
             outputs: [
                 { id: 'profitMargin', label: 'Profit Margin', value: '0', active: true },
                 { id: 'actualBuyValue', label: 'Actual Buy Value', value: '0', active: true },
@@ -69,12 +70,11 @@ class Home extends React.Component {
     }
 
     componentDidMount() {
-        this.setKeyBindings();
-        document.addEventListener('keydown', this.useKeyBindings);
+        document.addEventListener('keydown', this.keyBindings.useBindings);
     }
 
     componentWillUnmount() {
-        document.removeEventListener('keydown', this.useKeyBindings);
+        document.removeEventListener('keydown', this.keyBindings.useBindings);
     }
 
     updateCalculations() {
@@ -213,12 +213,16 @@ class Home extends React.Component {
                                             className="text-primary"
                                             placeholder="0"
                                             value={this.state.activeInvestment}
-                                            onFocus={this.setKeyBindings({
-                                                Delete: this.updateActiveInvestment,
-                                                Escape: this.updateActiveInvestment,
-                                            })}
-                                            onBlur={this.setKeyBindings}
-                                            onKeyDown={this.useKeyBindings}
+                                            onFocus={() => {
+                                                this.keyBindings.addBindings({
+                                                    Delete: this.updateActiveInvestment,
+                                                    Escape: this.updateActiveInvestment,
+                                                });
+                                            }}
+                                            onBlur={() => {
+                                                this.keyBindings.removeBindings('Delete', 'Escape');
+                                            }}
+                                            onKeyDown={this.keyBindings.useBindings}
                                             onInput={this.inputFilter}
                                         />
                                     </div>
