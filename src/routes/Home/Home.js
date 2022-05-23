@@ -168,6 +168,7 @@ class Home extends React.Component {
                     <div className="col-4 row p-1 center">
                         <div className="row options-container">
                             <Dropdown
+                                headClass="icon icon-btn"
                                 label={this.state.useOptionsLabels ? this.state.feeRates[this.state.activeFeeRate].label : null}
                                 firstItem={{
                                     heading: 'Fee Rate',
@@ -178,6 +179,7 @@ class Home extends React.Component {
                                 dataIndex={true}
                             />
                             <Dropdown
+                                headClass="icon icon-btn"
                                 label={this.state.useOptionsLabels ? this.state.taxRates[this.state.activeTaxRate].label : null}
                                 firstItem={{
                                     heading: 'Tax Rate',
@@ -188,6 +190,7 @@ class Home extends React.Component {
                                 dataIndex={true}
                             />
                             <Dropdown
+                                headClass="icon icon-btn"
                                 label={this.state.useOptionsLabels ? this.state.marginMultipliers[this.state.activeMarginMultiplier].label : null}
                                 firstItem={{
                                     heading: 'Margin Multiplier',
@@ -229,6 +232,7 @@ class Home extends React.Component {
                                     <div className="col-2 center-y-row end p-1 row">
                                         <div className="wrapper">
                                             <Dropdown
+                                                bodyClass="right"
                                                 firstItem={{
                                                     heading: 'Calculations',
                                                     text: 'Toggle the results visibility.',
@@ -236,7 +240,6 @@ class Home extends React.Component {
                                                 items={this.state.outputs}
                                                 clickEvent={this.toggleOutputVisibility}
                                                 dataIndex={true}
-                                                right={true}
                                             />
                                         </div>
                                     </div>

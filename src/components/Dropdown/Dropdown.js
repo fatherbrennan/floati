@@ -9,15 +9,22 @@ import React from 'react';
 class Dropdown extends React.Component {
     constructor(props) {
         super(props);
+
+        // Register methods
+        this.getClassName = this.getClassName.bind(this);
+    }
+
+    getClassName(initialClassName, testProp) {
+        return `${initialClassName}${testProp ? ' ' + testProp : ''}`;
     }
 
     render() {
         return (
-            <div className="dd">
-                <button type="button" className="dd-head">
+            <div className={this.getClassName('dd', this.props.class)}>
+                <button type="button" className={this.getClassName('dd-head', this.props.headClass)}>
                     {this.props.label || '⚙'}
                 </button>
-                <ul tabIndex="-1" className={`dd-body${this.props.right ? ' right' : ''}`}>
+                <ul tabIndex="-1" className={this.getClassName('dd-body', this.props.bodyClass)}>
                     {this.props.firstItem ? (
                         <li className="dd-item-static">
                             <h4 className="dd-item-heading">{this.props.firstItem.heading || null}</h4>
